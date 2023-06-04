@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Verification</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Add CSS styling for your UI elements here */
+    </style>
+    <script>
+        $(document).ready(function() {
+            $("#generateOtpBtn").click(function() {
+                var email = $("#email").val();
+
+                // Request OTP from backend API
+                $.ajax({
+                    type: "POST",
+                    url: "/api/send-otp",
+                    data: { email: email },
+                    success: function(response) {
+                        // Display success message or perform any required action
+                        alert(response.message); // Update the UI with the success message
+                        $("#otpInput").prop("disabled", false);
+                        $("#validateOtpBtn").prop("disabled", false);
+                    },
+                    error: function() {
+                        // Display error message or perform any required action
+                        alert("Failed to generate OTP. Please try again.");
+
+                    }
+                });
+            });
+
+            $("#validateOtpBtn").click(function() {
+
+                var otp = $("#otpInput").val();
+
+                // Validate OTP using backend API
+                $.ajax({
+                    type: "POST",
+                    url: "/api/validate-otp",
+                    data: { otp: otp },
+                    success: function(response) {
+                    console.log(response.message);
+                        // Display success message or perform any required action
+                        window.location.href = "Welcome.html"; // Update the UI with the success message
+                    },
+                    error: function() {
+                        // Display error message or perform any required action
+                        alert("Invalid OTP. Please try again.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body style="background-image: url(images/vivid-blurred-colorful-wallpaper-background.jpg);">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <h1>OTP Verification</h1>
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" placeholder="Enter Email ID">
+
+    <button id="generateOtpBtn">Request OTP</button>
+
+    <label for="otpInput" id="otpLabel">OTP:</label>
+    <input type="text" id="otpInput" placeholder="Enter OTP" disabled>
+
+    <button id="validateOtpBtn" disabled>Validate OTP</button>
+</div>
+</body>
+</html>

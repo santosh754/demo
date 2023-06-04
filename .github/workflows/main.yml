@@ -21,4 +21,4 @@ jobs:
       run: ./gradlew build
 
     - name: Run Spring Boot Application
-      run: java -jar build/libs/demo-0.0.1-SNAPSHOT.war
+      run: ./gradlew bootRun --no-daemon
